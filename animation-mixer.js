@@ -38,7 +38,7 @@
     gltf-model="#skyline"
     animation-mixer="clip: *; loop: repeat"
     animation__giro="property: rotation; to: 0 360 0; loop: true; dur: 10000; easing: linear"
-    animation__flotar="property: position; from: 0 1.5 -2; to: 0 3 -2; dir: alternate; loop: true; dur: 10000; easing: easeInOutSine"
+    animation__flotar="property: position; from: 0 1.5 -2; to: 0 3 -2; dir: alternate; loop: true; dur: 3000; easing: easeInOutSine"
     position="0 1.5 -2"
     scale="2 2 2"
     rotation="0 0 0">
