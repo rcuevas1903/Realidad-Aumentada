@@ -1,80 +1,69 @@
-/* global AFRAME, THREE */
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Skyline AR</title>
+ 
+  <!-- Ajusta la página al tamaño de la pantalla y evita que el usuario haga zoom con los dedos -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+ 
+  <!-- Carga la librería principal de A-Frame (el motor que hace funcionar todo el VR/AR) -->
+<script src="https://aframe.io/releases/1.8.0/aframe.min.js"></script>
+ 
+  <!-- Carga aframe-extras: paquete extra que incluye el "animation-mixer", necesario para que se reproduzca el aleteo -->
+<script src="https://cdn.jsdelivr.net/npm/aframe-extras@7.5.4/dist/aframe-extras.min.js"></script>
+</head>
+<body>
+ 
+<!-- LA ESCENA: aquí vive todo el mundo 3D/AR -->
+<a-scene
+  webxr="optionalFeatures: hit-test, local-floor, dom-overlay"
+  xr-mode-ui="XRMode: ar">
+<!-- webxr: pide las funciones de AR al Quest.
+         · hit-test    = permite detectar superficies reales (mesa, piso)
+         · local-floor = ubica dónde está tu suelo real
+         · dom-overlay = permite mostrar botones HTML encima del AR
+       xr-mode-ui="XRMode: ar" = hace que el botón de entrada diga "AR" (paso-through) en vez de "VR" -->
+ 
+  <!-- ZONA DE PRECARGA: A-Frame descarga estos archivos ANTES de mostrar la escena,
+       para que el modelo no aparezca a pedazos -->
+<a-assets timeout="10000">
+<!-- Registra tu modelo 3D y le pone el id "fenghuang" para poder referenciarlo abajo.
+         timeout="10000" = espera hasta 10 segundos a que cargue antes de rendirse -->
+<a-asset-item id="skyline" src="skyline.glb"></a-asset-item>
+</a-assets>
+ 
+  <!-- EL AVE: una entidad que carga y muestra el modelo -->
+<a-entity
+    gltf-model="#skyline"
+    animation-mixer="clip: *; loop: repeat"
+    animation__giro="property: rotation; to: 0 360 0; loop: true; dur: 10000; easing: linear"
+    animation__flotar="property: position; from 0 1.5 -2; to: 0 3 -2; dir: alternate; loop: true; dur: 10000; easing: easeInOutSine"
+    position="0 1.5 -2"
+    scale="2 2 2"
+    rotation="0 0 0">
+<!-- gltf-model="#fenghuang"  = usa el modelo que precargamos arriba (el # apunta a su id)
+         animation-mixer          = REPRODUCE LA ANIMACIÓN (el aleteo)
+             · clip: *            = reproduce todas las animaciones que tenga el modelo
+             · loop: repeat       = las repite en bucle infinito
+         position="0 1.5 -4"      = ubicación (X=izq/der, Y=altura, Z=cerca/lejos).
+                                    El -4 lo pone 4 metros frente a ti; Y=1.5 a la altura de la vista
+         scale="1 1 1"            = tamaño (1 = original). Súbelo o bájalo si sale gigante/diminuto
+         rotation="0 0 0"         = giro en grados (X, Y, Z). El del medio lo gira horizontalmente -->
 
-var DEFAULT_CLIP = '__auto__';
-
-AFRAME.registerComponent('animation-mixer', {
-  schema: {
-    clip: {default: DEFAULT_CLIP},
-    duration: {default: 0}
-  },
-
-  init: function () {
-    var model = this.el.getObject3D('mesh');
-
-    this.model = null;
-    this.mixer = null;
-    this.activeAction = null;
-
-    if (model) {
-      this.load(model);
-    } else {
-      this.el.addEventListener('model-loaded', function (e) {
-        this.load(e.detail.model);
-      }.bind(this));
-    }
-  },
-
-  load: function (model) {
-    this.model = model;
-    this.mixer = new THREE.AnimationMixer(model);
-    if (this.data.clip) { this.update({}); }
-  },
-
-  remove: function () {
-    if (this.mixer) this.mixer.stopAllAction();
-  },
-
-  update: function (previousData) {
-    if (!previousData) return;
-
-    var data = this.data;
-
-    if (data.clip !== previousData.clip) {
-      if (this.activeAction) this.activeAction.stop();
-      if (data.clip) this.playClip(data.clip);
-    }
-
-    if (!this.activeAction) return;
-
-    if (data.duration) {
-      this.activeAction.setDuration(data.duration);
-    }
-  },
-
-  playClip: function (clipName) {
-    if (!this.mixer) return;
-
-    var clip;
-    var data = this.data;
-    var model = this.model;
-    var animations = model.animations || (model.geometry || {}).animations || [];
-
-    if (!animations.length) { return; }
-
-    clip = clipName === DEFAULT_CLIP
-      ? animations[0]
-      : THREE.AnimationClip.findByName(animations, data.clip);
-
-    if (!clip) {
-      console.error('[animation-mixer] Clip "%s" not found.', data.clip);
-      return;
-    }
-
-    this.activeAction = this.mixer.clipAction(clip, model);
-    this.activeAction.play();
-  },
-
-  tick: function (t, dt) {
-    if (this.mixer && !isNaN(dt)) this.mixer.update(dt / 1000);
-  }
-});
+        </a-entity>
+ 
+  <!-- LUCES: los modelos glTF necesitan luz para verse; sin esto salen negros o planos -->
+<a-light type="ambient" intensity="0.9"></a-light>
+<!-- Luz ambiental = ilumina todo por igual, suave, sin sombras -->
+ 
+  <a-light type="directional" intensity="0.6" position="1 3 2"></a-light>
+<!-- Luz direccional = como el sol, viene de una dirección (aquí desde arriba-derecha) y da volumen -->
+ 
+  <!-- IMPORTANTE: aquí NO hay <a-sky> ni <a-plane> a propósito.
+       En AR queremos ver tu cuarto real, así que no ponemos cielo ni suelo virtual
+       (si los pusiéramos, taparían la vista de tu habitación) -->
+ 
+</a-scene>
+</body>
+</html>
