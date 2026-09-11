@@ -37,6 +37,7 @@
 <a-entity
     gltf-model="#skyline"
     animation-mixer="clip: *; loop: repeat"
+    animation__giro="property: rotation; to: 0 360 0; loop: true; dur: 10000"
     position="0 1.5 -2"
     scale="2 2 2"
     rotation="0 0 0">
@@ -50,11 +51,7 @@
          rotation="0 0 0"         = giro en grados (X, Y, Z). El del medio lo gira horizontalmente -->
 
         </a-entity>
- <a-entity
-  gltf-model="#skyline"
-  animation-mixer="clip: *; loop: repeat"
-  animation="property: rotation; to: 0 360 0; loop: true; dur: 10000">
-</a-entity>
+ 
   <!-- LUCES: los modelos glTF necesitan luz para verse; sin esto salen negros o planos -->
 <a-light type="ambient" intensity="0.9"></a-light>
 <!-- Luz ambiental = ilumina todo por igual, suave, sin sombras -->
