@@ -31,6 +31,9 @@
 <!-- Registra tu modelo 3D y le pone el id "fenghuang" para poder referenciarlo abajo.
          timeout="10000" = espera hasta 10 segundos a que cargue antes de rendirse -->
 <a-asset-item id="skyline" src="skyline.glb"></a-asset-item>
+<a-asset-item id="bugatti_chiron" src="bugatti_chiron.glb"></a-asset-item>
+<a-asset-item id="delorean_lego" src="delorean_lego.glb"></a-asset-item>
+<a-asset-item id="lightning_mcqueen" src="lightning_mcqueen.glb"></a-asset-item>
 </a-assets>
  
   <!-- EL AVE: una entidad que carga y muestra el modelo -->
@@ -51,7 +54,58 @@
          rotation="0 0 0"         = giro en grados (X, Y, Z). El del medio lo gira horizontalmente -->
 
         </a-entity>
- 
+ <a-entity
+    gltf-model="#bugatti_chiron"
+    animation-mixer="clip: *; loop: repeat"
+    animation__giro="property: rotation; to: 0 360 0; loop: true; dur: 10000; easing: linear"
+    position="0 1.5 -2"
+    scale="2 2 2"
+    rotation="0 0 0">
+<!-- gltf-model="#fenghuang"  = usa el modelo que precargamos arriba (el # apunta a su id)
+         animation-mixer          = REPRODUCE LA ANIMACIÓN (el aleteo)
+             · clip: *            = reproduce todas las animaciones que tenga el modelo
+             · loop: repeat       = las repite en bucle infinito
+         position="0 1.5 -4"      = ubicación (X=izq/der, Y=altura, Z=cerca/lejos).
+                                    El -4 lo pone 4 metros frente a ti; Y=1.5 a la altura de la vista
+         scale="1 1 1"            = tamaño (1 = original). Súbelo o bájalo si sale gigante/diminuto
+         rotation="0 0 0"         = giro en grados (X, Y, Z). El del medio lo gira horizontalmente -->
+
+        </a-entity>
+  <a-entity
+    gltf-model="#delorean_lego"
+    animation-mixer="clip: *; loop: repeat"
+    animation__giro="property: rotation; to: 0 360 0; loop: true; dur: 10000; easing: linear"
+    position="0 1.5 -2"
+    scale="2 2 2"
+    rotation="0 0 0">
+<!-- gltf-model="#fenghuang"  = usa el modelo que precargamos arriba (el # apunta a su id)
+         animation-mixer          = REPRODUCE LA ANIMACIÓN (el aleteo)
+             · clip: *            = reproduce todas las animaciones que tenga el modelo
+             · loop: repeat       = las repite en bucle infinito
+         position="0 1.5 -4"      = ubicación (X=izq/der, Y=altura, Z=cerca/lejos).
+                                    El -4 lo pone 4 metros frente a ti; Y=1.5 a la altura de la vista
+         scale="1 1 1"            = tamaño (1 = original). Súbelo o bájalo si sale gigante/diminuto
+         rotation="0 0 0"         = giro en grados (X, Y, Z). El del medio lo gira horizontalmente -->
+
+        </a-entity>
+<a-entity
+    gltf-model="#lightning_mcqueen"
+    animation-mixer="clip: *; loop: repeat"
+    animation__giro="property: rotation; to: 0 360 0; loop: true; dur: 10000; easing: linear"
+    position="0 1.5 -2"
+    scale="2 2 2"
+    rotation="0 0 0">
+<!-- gltf-model="#fenghuang"  = usa el modelo que precargamos arriba (el # apunta a su id)
+         animation-mixer          = REPRODUCE LA ANIMACIÓN (el aleteo)
+             · clip: *            = reproduce todas las animaciones que tenga el modelo
+             · loop: repeat       = las repite en bucle infinito
+         position="0 1.5 -4"      = ubicación (X=izq/der, Y=altura, Z=cerca/lejos).
+                                    El -4 lo pone 4 metros frente a ti; Y=1.5 a la altura de la vista
+         scale="1 1 1"            = tamaño (1 = original). Súbelo o bájalo si sale gigante/diminuto
+         rotation="0 0 0"         = giro en grados (X, Y, Z). El del medio lo gira horizontalmente -->
+
+        </a-entity>
+
   <!-- LUCES: los modelos glTF necesitan luz para verse; sin esto salen negros o planos -->
 <a-light type="ambient" intensity="0.9"></a-light>
 <!-- Luz ambiental = ilumina todo por igual, suave, sin sombras -->
